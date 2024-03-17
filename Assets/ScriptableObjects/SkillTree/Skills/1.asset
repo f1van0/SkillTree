@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 1
   m_EditorClassIdentifier: 
   Name: 1
-  Position: {x: -3, y: 3}
+  Position: {x: -30, y: 30}
   Cost: 1
   IsLearnedAtTheBeginning: 0
   Requirements:

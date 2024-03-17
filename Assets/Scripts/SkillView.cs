@@ -4,8 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class SkillView : MonoBehaviour {
-    public event Action<Guid> Selected;
-    
+    public event Action<String> Selected;
+
+    public String Id { get; private set; }
+
     [SerializeField] private TMP_Text _label;
     [SerializeField] private Button _button;
     [SerializeField] private Image _image;
@@ -13,10 +15,8 @@ public class SkillView : MonoBehaviour {
     [SerializeField] private Color DefaultColor;
     [SerializeField] private Color LearnedColor;
 
-    private Guid _id;
-
-    public void Initialize(Guid id, string name, bool isLearned) {
-        _id = id;
+    public void Initialize(String id, string name, bool isLearned) {
+        Id = id;
         _label.text = name;
         SetLearnedState(isLearned);
         
@@ -28,6 +28,6 @@ public class SkillView : MonoBehaviour {
     }
 
     public void HandleClick() {
-        Selected?.Invoke(_id);
+        Selected?.Invoke(Id);
     }
 }
