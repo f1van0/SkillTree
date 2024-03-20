@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SkillPresenter {
@@ -38,4 +39,14 @@ public class SkillPresenter {
     
     public bool GetLearnFromBeginningState()
         => _data.IsLearnedAtTheBeginning;
+
+    public List<(string fromId, string toId)> GetConnections() {
+        List<(string fromId, string toId)> connections = new List<(string fromId, string toId)>();
+
+        foreach (var connection in _data.Connections) {
+            connections.Add((_data.Id, connection.Id));
+        }
+
+        return connections;
+    }
 }

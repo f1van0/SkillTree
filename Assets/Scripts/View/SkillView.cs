@@ -26,6 +26,7 @@ public class SkillView : MonoBehaviour {
 
     public void SetUpValues() {
         Id = _presenter.GetId();
+        gameObject.name = "Skill_"+_presenter.GetName();
         _label.text = _presenter.GetName();
         _image.color = _presenter.GetLearnState()? LearnedColor : DefaultColor;
     }
