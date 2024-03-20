@@ -10,8 +10,8 @@ public class SkillTreePresenter {
         _data = data;
 
         _skillPresenters = new List<SkillPresenter>();
-        foreach (var skill in _data.Skills) {
-            _skillPresenters.Add(new SkillPresenter(skill.Value));
+        foreach (var skill in _data.GetSkills()) {
+            _skillPresenters.Add(new SkillPresenter(skill));
         }
     }
 

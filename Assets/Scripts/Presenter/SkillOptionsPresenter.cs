@@ -17,7 +17,7 @@ public class SkillOptionsPresenter {
     }
 
     private void HandleSelectedSkillChanged() {
-        _selectedSkillPresenter = new SkillPresenter(_skillTreeData.SelectedSkill);
+        _selectedSkillPresenter = new SkillPresenter(_skillTreeData.GetSelectedSkill());
         SelectedSkillChanged?.Invoke();
     }
 

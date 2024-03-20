@@ -6,143 +6,104 @@ using UnityEngine;
 public class SkillTreeData {
     public event Action SelectedSkillChanged;
     
-    public Dictionary<string, SkillData> Skills;
-    public SkillData SelectedSkill;
+    private Dictionary<string, SkillData> _skills;
+    private SkillData _selectedSkill;
 
     public SkillTreeData(SkillsContainerSO container) {
-        Skills = new Dictionary<string, SkillData>();
-        SelectedSkill = null;
+        _skills = new Dictionary<string, SkillData>();
+        _selectedSkill = null;
         
         foreach (var skillConfig in container.Skills) {
             var newSkill = new SkillData(skillConfig);
-            Skills.Add(skillConfig.Id, newSkill);
+            _skills.Add(skillConfig.Id, newSkill);
         }
 
         EstablishTwoWayConnection(container);
     }
 
-    public void EstablishTwoWayConnection(SkillsContainerSO container) {
+    private void EstablishTwoWayConnection(SkillsContainerSO container) {
         foreach (var skillConfig in container.Skills) {
-            if (!Skills.ContainsKey(skillConfig.Id))
+            if (!_skills.ContainsKey(skillConfig.Id))
                 continue;
             
             foreach (var requirement in skillConfig.Requirements) {
-                if (!Skills.ContainsKey(requirement.Id))
+                if (!_skills.ContainsKey(requirement.Id))
                     continue;
 
-                if (!Skills[skillConfig.Id].HasConnectionWithSkill(Skills[requirement.Id]))
-                    Skills[skillConfig.Id].AddConnection(Skills[requirement.Id]);
+                if (!_skills[skillConfig.Id].HasConnectionWithSkill(_skills[requirement.Id]))
+                    _skills[skillConfig.Id].AddConnection(_skills[requirement.Id]);
                 
-                if (!Skills[requirement.Id].HasConnectionWithSkill(Skills[skillConfig.Id]))
-                    Skills[requirement.Id].AddConnection(Skills[skillConfig.Id]);
+                if (!_skills[requirement.Id].HasConnectionWithSkill(_skills[skillConfig.Id]))
+                    _skills[requirement.Id].AddConnection(_skills[skillConfig.Id]);
             }
         }
     }
 
+    public SkillData[] GetSkills() {
+        return _skills.Values.ToArray();
+    }
+    
+    public SkillData GetSelectedSkill() {
+        return _selectedSkill;
+    }
+
     public void Select(String skillId) {
-        if (!Skills.ContainsKey(skillId))
+        if (!_skills.ContainsKey(skillId))
             throw new Exception("You are trying to select skill that do not exist!");
         
-        SelectedSkill = Skills[skillId];
+        _selectedSkill = _skills[skillId];
         SelectedSkillChanged?.Invoke();
     }
 
     public void LearnSelectedSkill(out int cost) {
-        cost = SelectedSkill.Cost;
-
-        if (SelectedSkill == null) {
+        if (_selectedSkill == null) {
             throw new Exception("You are trying to learn selected skill but it doesn't exist!");
         }
         
-        if (SelectedSkill.IsLearned) {
-            throw new Exception("You are trying to learn selected skill that was already learned!");
-        }
-        
-        SelectedSkill.IsLearned = true;
+        _selectedSkill.Learn();
+        cost = _selectedSkill.Cost;
         SelectedSkillChanged?.Invoke();
     }
 
     private void ForgetSkill(SkillData skill, out int cost) {
-        if (!skill.IsLearned)
-            throw new Exception($"You are trying to forget a skill {skill.Name} that has not been learned");
-        
-        if (skill.IsLearnedAtTheBeginning)
-            throw new Exception($"You are trying to forget a skill {skill.Name} that learned from the beginning");
-        
-        skill.IsLearned = false;
+        skill.Forget();
         cost = skill.Cost;
         SelectedSkillChanged?.Invoke();
     }
 
     public void ForgetSelectedSkill(out int cost) {
-        ForgetSkill(SelectedSkill, out cost);
+        if (_selectedSkill == null) {
+            throw new Exception("You are trying to forget selected skill but it doesn't exist!");
+        }
+        
+        ForgetSkill(_selectedSkill, out cost);
     }
 
     public void ForgetAllSkills(out int totalCost) {
         totalCost = 0;
         int cost = 0;
-        foreach (var skill in Skills) {
+        foreach (var skill in _skills) {
             if (skill.Value.IsLearned && !skill.Value.IsLearnedAtTheBeginning) {
                 ForgetSkill(skill.Value, out cost);
                 totalCost += cost;
                 
-                if (skill.Value == SelectedSkill)
+                if (skill.Value == _selectedSkill)
                     SelectedSkillChanged?.Invoke();
             }
         }
     }
 
     public bool CanLearnSelectedSkill(int amountOfSkillPoints) {
-        if (SelectedSkill == null || SelectedSkill.IsLearned || SelectedSkill.Cost > amountOfSkillPoints)
+        if (_selectedSkill == null)
             return false;
 
-        foreach (var requirement in SelectedSkill.Connections) {
-            if (requirement.IsLearned)
-                return true;
-        }
-
-        return false;
+        return _selectedSkill.CanBeLearned(amountOfSkillPoints);
     }
 
     public bool CanForgetSelectedSkill() {
-        if (SelectedSkill == null || SelectedSkill.IsLearnedAtTheBeginning || !SelectedSkill.IsLearned)
+        if (_selectedSkill == null)
             return false;
 
-        foreach (var anotherSkill in SelectedSkill.Connections) {
-            if (!anotherSkill.IsLearned || anotherSkill.IsLearnedAtTheBeginning)
-                continue;
-
-            if (!IsSkillConnectedWithBaseSkill(anotherSkill, SelectedSkill))
-                return false;
-        }
-        
-        return true;
-    }
-
-    public bool IsSkillConnectedWithBaseSkill(SkillData skillData, SkillData ignoreSkill = null) {
-        HashSet<SkillData> visitedSkills = new HashSet<SkillData>();
-
-        bool hasConnectionWithBaseSkill = TryToFindBaseSkillInConnections(skillData);
-
-        return hasConnectionWithBaseSkill;
-        
-        bool TryToFindBaseSkillInConnections(SkillData skillData) {
-            foreach (var connectedSkill in skillData.Connections) {
-                if (connectedSkill.IsLearnedAtTheBeginning)
-                    return true;
-                
-                if (visitedSkills.Contains(connectedSkill) || connectedSkill == ignoreSkill)
-                    continue;
-
-                if (connectedSkill.IsLearned) {
-                    visitedSkills.Add(connectedSkill);
-                    bool result = TryToFindBaseSkillInConnections(connectedSkill);
-                    if (result)
-                        return true;
-                }
-            }
-
-            return false;
-        }
+        return _selectedSkill.CanBeForgotten();
     }
 }

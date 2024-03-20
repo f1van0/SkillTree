@@ -12,8 +12,8 @@ public class SkillView : MonoBehaviour {
     [SerializeField] private Button _button;
     [SerializeField] private Image _image;
 
-    [SerializeField] private Color DefaultColor;
-    [SerializeField] private Color LearnedColor;
+    [SerializeField] private Color _defaultColor;
+    [SerializeField] private Color _learnedColor;
     
     private SkillPresenter _presenter;
 
@@ -28,7 +28,7 @@ public class SkillView : MonoBehaviour {
         Id = _presenter.GetId();
         gameObject.name = "Skill_"+_presenter.GetName();
         _label.text = _presenter.GetName();
-        _image.color = _presenter.GetLearnState()? LearnedColor : DefaultColor;
+        _image.color = _presenter.GetLearnState()? _learnedColor : _defaultColor;
     }
 
     public void HandleClick() {
