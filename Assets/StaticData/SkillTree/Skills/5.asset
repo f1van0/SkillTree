@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8838e8c7143c49028bfa65ca73ad40bf, type: 3}
   m_Name: 5
   m_EditorClassIdentifier: 
-  Id: 5fab50aa-285c-48cd-bd91-d90fe0e5fda3
-  Name: 5
-  Position: {x: -25, y: -35}
-  Cost: 1
-  IsLearnedAtTheBeginning: 0
-  Requirements:
-  - {fileID: 11400000, guid: 539a44b3f0c03ac47914d34baade1f59, type: 2}
+  <Id>k__BackingField: 680e4a8e-404e-4b50-a5ef-25e89f49505a
+  <Name>k__BackingField: 5
+  <Position>k__BackingField: {x: 25, y: -35}
+  <Cost>k__BackingField: 1
+  <IsLearnedAtTheBeginning>k__BackingField: 0
+  <Requirements>k__BackingField:
   - {fileID: 11400000, guid: be8ab942aa0f1934cb335250159136be, type: 2}

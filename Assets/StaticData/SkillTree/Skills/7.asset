@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8838e8c7143c49028bfa65ca73ad40bf, type: 3}
-  m_Name: 4
+  m_Name: 7
   m_EditorClassIdentifier: 
-  <Id>k__BackingField: 0cecf58a-393e-4eb3-aedc-9531077e937b
-  <Name>k__BackingField: 4
-  <Position>k__BackingField: {x: 50, y: 0}
+  <Id>k__BackingField: 68091f21-3433-49f4-9177-505ae10c2fad
+  <Name>k__BackingField: 7
+  <Position>k__BackingField: {x: -15, y: -85}
   <Cost>k__BackingField: 1
   <IsLearnedAtTheBeginning>k__BackingField: 0
   <Requirements>k__BackingField:
-  - {fileID: 11400000, guid: 8f34087a8d52fc44696de0946724ac49, type: 2}
+  - {fileID: 11400000, guid: cf13938725e42414b97dc68c94879745, type: 2}

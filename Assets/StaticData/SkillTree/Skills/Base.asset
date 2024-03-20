@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8838e8c7143c49028bfa65ca73ad40bf, type: 3}
   m_Name: Base
   m_EditorClassIdentifier: 
-  Id: edbebf60-c493-41fd-ad9a-ec92018af18b
-  Name: "\u0411\u0430\u0437\u0430"
-  Position: {x: -50, y: 0}
-  Cost: 0
-  IsLearnedAtTheBeginning: 1
-  Requirements: []
+  <Id>k__BackingField: 5676e50e-8c24-4aa6-bda2-7aeeefce9eb5
+  <Name>k__BackingField: "\u0411\u0430\u0437\u0430"
+  <Position>k__BackingField: {x: -60, y: 0}
+  <Cost>k__BackingField: 0
+  <IsLearnedAtTheBeginning>k__BackingField: 1
+  <Requirements>k__BackingField: []

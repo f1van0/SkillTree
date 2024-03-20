@@ -12,10 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6b8e4d911f646bdaadc5c5c5c0615f8, type: 3}
   m_Name: SkillsContainer
   m_EditorClassIdentifier: 
-  Skills:
+  <Skills>k__BackingField:
   - {fileID: 11400000, guid: 539a44b3f0c03ac47914d34baade1f59, type: 2}
   - {fileID: 11400000, guid: 9d8eeed12e6508049bbae34ac12eef00, type: 2}
   - {fileID: 11400000, guid: 8f34087a8d52fc44696de0946724ac49, type: 2}
   - {fileID: 11400000, guid: b715570034ae526468dd6872b298854d, type: 2}
   - {fileID: 11400000, guid: be8ab942aa0f1934cb335250159136be, type: 2}
   - {fileID: 11400000, guid: 8db60809229286d4290e28a3431a58ea, type: 2}
+  - {fileID: 11400000, guid: cf13938725e42414b97dc68c94879745, type: 2}
+  - {fileID: 11400000, guid: 9123f5b2c06ffd3438f8bee4ea2b3fd9, type: 2}
+  - {fileID: 11400000, guid: 35c383fea8add6541beefb9fac0bb045, type: 2}
+  - {fileID: 11400000, guid: e463d4c069e27374d9ba33d6fa7c207c, type: 2}
+  - {fileID: 11400000, guid: ff40f3effb93dcb45894566d8b487670, type: 2}
