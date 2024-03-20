@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8838e8c7143c49028bfa65ca73ad40bf, type: 3}
-  m_Name: 3
+  m_Name: 1
   m_EditorClassIdentifier: 
-  Name: 3
-  Position: {x: 60, y: -60}
+  Id: 835ad0b8-4adc-4e12-9146-be7dcfa15f7a
+  Name: 1
+  Position: {x: -25, y: 35}
   Cost: 1
   IsLearnedAtTheBeginning: 0
   Requirements:
-  - {fileID: 11400000, guid: 8f34087a8d52fc44696de0946724ac49, type: 2}
+  - {fileID: 11400000, guid: 539a44b3f0c03ac47914d34baade1f59, type: 2}

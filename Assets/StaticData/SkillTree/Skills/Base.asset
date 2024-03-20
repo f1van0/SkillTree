@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8838e8c7143c49028bfa65ca73ad40bf, type: 3}
-  m_Name: 1
+  m_Name: Base
   m_EditorClassIdentifier: 
-  Name: 1
-  Position: {x: -30, y: 30}
-  Cost: 1
-  IsLearnedAtTheBeginning: 0
-  Requirements:
-  - {fileID: 11400000, guid: 539a44b3f0c03ac47914d34baade1f59, type: 2}
+  Id: edbebf60-c493-41fd-ad9a-ec92018af18b
+  Name: "\u0411\u0430\u0437\u0430"
+  Position: {x: -50, y: 0}
+  Cost: 0
+  IsLearnedAtTheBeginning: 1
+  Requirements: []

@@ -9,11 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6b8e4d911f646bdaadc5c5c5c0615f8, type: 3}
-  m_Name: SkillsContainer
+  m_Script: {fileID: 11500000, guid: 8838e8c7143c49028bfa65ca73ad40bf, type: 3}
+  m_Name: 5
   m_EditorClassIdentifier: 
-  Skills:
+  Id: 5fab50aa-285c-48cd-bd91-d90fe0e5fda3
+  Name: 5
+  Position: {x: -25, y: -35}
+  Cost: 1
+  IsLearnedAtTheBeginning: 0
+  Requirements:
   - {fileID: 11400000, guid: 539a44b3f0c03ac47914d34baade1f59, type: 2}
-  - {fileID: 11400000, guid: 9d8eeed12e6508049bbae34ac12eef00, type: 2}
-  - {fileID: 11400000, guid: 8f34087a8d52fc44696de0946724ac49, type: 2}
-  - {fileID: 11400000, guid: b715570034ae526468dd6872b298854d, type: 2}
+  - {fileID: 11400000, guid: be8ab942aa0f1934cb335250159136be, type: 2}
