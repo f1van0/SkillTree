@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SkillData {
-    public event Action<bool> LearnedStateChanged;
+    public event Action Changed;
     
     public String Id;
     public String Name;
@@ -21,7 +21,7 @@ public class SkillData {
         set
         {
             _isLearned = value;
-            LearnedStateChanged?.Invoke(_isLearned);
+            Changed?.Invoke();
         }
     }
 

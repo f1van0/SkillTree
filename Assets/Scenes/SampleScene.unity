@@ -315,7 +315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _skillsContainerSO: {fileID: 11400000, guid: 8c2524dcd3ccbd7439ef0068b8f9eab8, type: 2}
-  _skillTreeViewPrefab: {fileID: 3135343674125057941, guid: 5e7f21a83282c8043b5b6f49a1810df7, type: 3}
+  _skillTreeScreenPrefab: {fileID: 8962439773798990926, guid: 5e7f21a83282c8043b5b6f49a1810df7, type: 3}
 --- !u!4 &878751074
 Transform:
   m_ObjectHideFlags: 0
