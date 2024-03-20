@@ -14,20 +14,28 @@ public class SkillView : MonoBehaviour {
 
     [SerializeField] private Color DefaultColor;
     [SerializeField] private Color LearnedColor;
+    
+    private SkillPresenter _presenter;
 
-    public void Initialize(String id, string name, bool isLearned) {
-        Id = id;
-        _label.text = name;
-        SetLearnedState(isLearned);
-        
+    public void Initialize(SkillPresenter presenter) {
+        _presenter = presenter;
+        _presenter.Changed += SetUpValues;
         _button.onClick.AddListener(HandleClick);
+        SetUpValues();
     }
 
-    public void SetLearnedState(bool isLearned) {
-        _image.color = isLearned ? LearnedColor : DefaultColor;
+    public void SetUpValues() {
+        Id = _presenter.GetId();
+        _label.text = _presenter.GetName();
+        _image.color = _presenter.GetLearnState()? LearnedColor : DefaultColor;
     }
 
     public void HandleClick() {
         Selected?.Invoke(Id);
+    }
+
+    private void OnDestroy() {
+        _presenter.Changed -= SetUpValues;
+        _button.onClick.RemoveListener(HandleClick);
     }
 }

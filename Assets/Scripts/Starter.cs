@@ -3,14 +3,17 @@ using UnityEngine;
 
 public class Starter : MonoBehaviour {
     [SerializeField] private SkillsContainerSO _skillsContainerSO;
-    [SerializeField] private SkillTreeView _skillTreeViewPrefab;
+    [SerializeField] private SkillTreeScreenView _skillTreeScreenPrefab;
 
-    private SkillTreeView _skillTreeView;
+    private SkillTreeScreenView _skillTreeScreen;
     
     private void Start() {
         var skillTreeData = new SkillTreeData(_skillsContainerSO);
-        var skillTreePresenter = new SkillTreePresenter(skillTreeData);
-        _skillTreeView = Instantiate(_skillTreeViewPrefab);
-        _skillTreeView.Initialize(skillTreePresenter);
+        var skillPointsData = new SkillPointsData();
+        var skillTreePresenter = new SkillTreeScreenPresenter(skillTreeData,skillPointsData);
+        
+        _skillTreeScreen = Instantiate(_skillTreeScreenPrefab);
+        _skillTreeScreen.Initialize(skillTreePresenter);
+        _skillTreeScreen.Show();
     }
 }

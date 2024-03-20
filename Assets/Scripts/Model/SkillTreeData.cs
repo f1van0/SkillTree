@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class SkillTreeData {
+    public event Action SelectedSkillChanged;
+    
     public Dictionary<string, SkillData> Skills;
     public SkillData SelectedSkill;
-    public int AvailableSkillPoints;
 
     public SkillTreeData(SkillsContainerSO container) {
         Skills = new Dictionary<string, SkillData>();
@@ -36,24 +39,30 @@ public class SkillTreeData {
         }
     }
 
-    public void EarnSkillPoint() {
-        AvailableSkillPoints++;
-    }
-
     public void Select(String skillId) {
-        SelectedSkill = GetSkillById(skillId);
+        if (!Skills.ContainsKey(skillId))
+            throw new Exception("You are trying to select skill that do not exist!");
+        
+        SelectedSkill = Skills[skillId];
+        SelectedSkillChanged?.Invoke();
     }
 
-    public SkillData GetSkillById(String skillId) {
-        return Skills[skillId];
-    }
+    public void LearnSelectedSkill(out int cost) {
+        cost = SelectedSkill.Cost;
 
-    public void LearnSelectedSkill() {
+        if (SelectedSkill == null) {
+            throw new Exception("You are trying to learn selected skill but it doesn't exist!");
+        }
+        
+        if (SelectedSkill.IsLearned) {
+            throw new Exception("You are trying to learn selected skill that was already learned!");
+        }
+        
         SelectedSkill.IsLearned = true;
-        AvailableSkillPoints -= SelectedSkill.Cost;
+        SelectedSkillChanged?.Invoke();
     }
 
-    public void ForgetSkill(SkillData skill, bool forceMode = false) {
+    private void ForgetSkill(SkillData skill, out int cost) {
         if (!skill.IsLearned)
             throw new Exception($"You are trying to forget a skill {skill.Name} that has not been learned");
         
@@ -61,23 +70,30 @@ public class SkillTreeData {
             throw new Exception($"You are trying to forget a skill {skill.Name} that learned from the beginning");
         
         skill.IsLearned = false;
-        AvailableSkillPoints += skill.Cost;
+        cost = skill.Cost;
+        SelectedSkillChanged?.Invoke();
     }
 
-    public void ForgetSelectedSkill() {
-        ForgetSkill(SelectedSkill);
+    public void ForgetSelectedSkill(out int cost) {
+        ForgetSkill(SelectedSkill, out cost);
     }
 
-    public void ForgetAllSkills() {
+    public void ForgetAllSkills(out int totalCost) {
+        totalCost = 0;
+        int cost = 0;
         foreach (var skill in Skills) {
             if (skill.Value.IsLearned && !skill.Value.IsLearnedAtTheBeginning) {
-                ForgetSkill(skill.Value, true);
+                ForgetSkill(skill.Value, out cost);
+                totalCost += cost;
+                
+                if (skill.Value == SelectedSkill)
+                    SelectedSkillChanged?.Invoke();
             }
         }
     }
 
-    public bool CanLearnSelectedSkill() {
-        if (SelectedSkill == null || SelectedSkill.IsLearned || SelectedSkill.Cost > AvailableSkillPoints)
+    public bool CanLearnSelectedSkill(int amountOfSkillPoints) {
+        if (SelectedSkill == null || SelectedSkill.IsLearned || SelectedSkill.Cost > amountOfSkillPoints)
             return false;
 
         foreach (var requirement in SelectedSkill.Connections) {
