@@ -16,11 +16,11 @@ public class ConnectionView : MonoBehaviour {
         _from = from;
         _to = to;
 
-        Vector3 deltaVector = to.transform.position - from.transform.position;
+        Vector3 deltaVector = to.transform.localPosition - from.transform.localPosition;
         float angle = Vector3.SignedAngle(deltaVector, to.transform.right, to.transform.forward);
         
         transform.right = deltaVector;
-        transform.position = from.transform.position;
+        transform.localPosition = from.transform.localPosition;
         transform.localScale = new Vector3(deltaVector.magnitude, _width, _width);
     }
 }

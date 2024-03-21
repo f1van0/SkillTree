@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillTreeFieldView : MonoBehaviour {
+public class SkillTreeView : MonoBehaviour {
     [SerializeField] private SkillView _skillPrefab;
     [SerializeField] private ConnectionView _connectionPrefab;
 
@@ -18,37 +18,18 @@ public class SkillTreeFieldView : MonoBehaviour {
         _skills = new List<SkillView>();
         _connections = new List<ConnectionView>();
 
-        foreach (var skillPresenter in _presenter.GetSkillPresenters()) {
+        foreach (var skillPresenter in _presenter.Skills) {
             var newSkillView = Instantiate(_skillPrefab, _skillsContainer);
-            newSkillView.transform.localPosition = skillPresenter.GetPosition();
             newSkillView.Initialize(skillPresenter);
-
-            newSkillView.Selected += SelectSkill;
-
             _skills.Add(newSkillView);
         }
 
-        foreach (var connection in _presenter.GetConnectionBetweenSkills()) {
+        foreach (var connection in _presenter.Connections) {
             var newTransitionView = Instantiate(_connectionPrefab, _connectionsContainer);
             var fromSkill = _skills.Find(x => x.Id == connection.fromId);
             var toSkill = _skills.Find(x => x.Id == connection.toId);
             newTransitionView.Setup(fromSkill, toSkill);
             _connections.Add(newTransitionView);
-        }
-    }
-
-    private void SelectSkill(String id) {
-        _presenter.Select(id);
-    }
-
-    private void OnDestroy() {
-        foreach (var skillView in _skills) {
-            skillView.Selected -= SelectSkill;
-            Destroy(skillView);
-        }
-
-        foreach (var connection in _connections) {
-            Destroy(connection);
         }
     }
 }

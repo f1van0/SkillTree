@@ -4,47 +4,46 @@ using UnityEngine;
 
 public class SkillPresenter {
     public event Action Changed;
-    public event Action Selected;
+    public event Action<string> Selected;
     
-    private SkillData _data;
+    public string Name
+        => _skillData.Name;
     
-    public SkillPresenter(SkillData data) {
-        _data = data;
-        _data.Changed += HandleSkillChanged;
-        _data.Changed += HandleSkillSelected;
+    public string Id
+        => _skillData.Id;
+    
+    public int Cost
+        => _skillData.Cost;
+    
+    public Vector2 Position
+        => _skillData.Position;
+    
+    public bool IsLearned
+        => _skillData.IsLearned;
+    
+    public bool IsBaseSkill
+        => _skillData.IsBaseSkill;
+    
+    private SkillData _skillData;
+    
+    public SkillPresenter(SkillData skillData) {
+        _skillData = skillData;
+        _skillData.Changed += HandleSkillChanged;
+    }
+
+    public void Select() {
+        Selected?.Invoke(Id);
     }
 
     private void HandleSkillChanged() {
         Changed?.Invoke();
     }
-    
-    private void HandleSkillSelected() {
-        Selected?.Invoke();
-    }
-
-    public string GetName()
-        => _data.Name;
-    
-    public string GetId()    
-        => _data.Id;
-    
-    public int GetCost()
-        => _data.Cost;
-    
-    public Vector2 GetPosition()
-        => _data.Position;
-    
-    public bool GetLearnState()    
-        => _data.IsLearned;
-    
-    public bool GetLearnFromBeginningState()
-        => _data.IsLearnedAtTheBeginning;
 
     public List<(string fromId, string toId)> GetConnections() {
         List<(string fromId, string toId)> connections = new List<(string fromId, string toId)>();
 
-        foreach (var connection in _data.Connections) {
-            connections.Add((_data.Id, connection.Id));
+        foreach (var connection in _skillData.Connections) {
+            connections.Add((_skillData.Id, connection.Id));
         }
 
         return connections;

@@ -1,9 +1,8 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class SkillTreeScreenView : MonoBehaviour {
     [SerializeField] private GameObject _root;
-    [SerializeField] private SkillTreeFieldView _skillTreeFieldView;
+    [SerializeField] private SkillTreeView _skillTreeView;
     [SerializeField] private SkillTreePanelView skillTreePanelView;
 
     private SkillTreeScreenPresenter _presenter;
@@ -11,7 +10,7 @@ public class SkillTreeScreenView : MonoBehaviour {
     public void Initialize(SkillTreeScreenPresenter presenter) {
         _presenter = presenter;
         
-        _skillTreeFieldView.Initialize(_presenter.SkillTreePresenter);
+        _skillTreeView.Initialize(_presenter.SkillTreePresenter);
         skillTreePanelView.Initialize(_presenter.SkillOptionsPresenter);
     }
     

@@ -16,7 +16,9 @@ public class SkillTreePanelView : MonoBehaviour {
     
     public void Initialize(SkillOptionsPresenter presenter) {
         _presenter = presenter;
-        
+    }
+
+    private void OnEnable() {
         _presenter.SelectedSkillChanged += HandleSelectedSkillChanged;
         _presenter.ChangedAmountOfAvailableSkillPoints += HandleAmountOfAvailableSkillPointsChanged;
         
@@ -25,13 +27,23 @@ public class SkillTreePanelView : MonoBehaviour {
         _forgetButton.onClick.AddListener(ForgetSkill);
         _forgetAllButton.onClick.AddListener(ForgetAllSkills);
         
-        ChangeAmountOfAvailableSkillPoints(_presenter.GetAmountOfAvailableSkillPoints());
+        ChangeAmountOfAvailableSkillPoints(_presenter.AmountOfAvailableSkillPoints);
         UpdateDebugInfoAboutSelectedSkill();
         SetLearnButtonInteractivity(_presenter.CanLearnSelectedSkill());
         SetForgetButtonInteractivity(_presenter.CanForgetSelectedSkill());
         SetForgetAllButtonInteractivity(true);
     }
-    
+
+    private void OnDisable() {
+        _presenter.SelectedSkillChanged -= HandleSelectedSkillChanged;
+        _presenter.ChangedAmountOfAvailableSkillPoints -= HandleAmountOfAvailableSkillPointsChanged;
+        
+        _earnSkillPointButton.onClick.RemoveListener(EarnSkillPoint);
+        _learnButton.onClick.RemoveListener(LearnSkill);
+        _forgetButton.onClick.RemoveListener(ForgetSkill);
+        _forgetAllButton.onClick.RemoveListener(ForgetAllSkills);
+    }
+
     private void EarnSkillPoint() {
         _presenter.EarnSkillPoint();
     }
@@ -76,25 +88,20 @@ public class SkillTreePanelView : MonoBehaviour {
     }
     
     private void UpdateDebugInfoAboutSelectedSkill() {
-        var selectedSkillPresenter = _presenter.GetPresenterForSelectedSkill();
+        var selectedSkill = _presenter.SelectedSkill;
 
-        if (selectedSkillPresenter == null) {
+        if (selectedSkill == null) {
             _debugSelectedSkillLabel.text = "Skill is not selected";
             return;
         }
         
         _debugSelectedSkillLabel.text =
             new StringBuilder().Append("Selected skill\n")
-                .Append("Name: ").Append(selectedSkillPresenter.GetName())
-                .Append("\nId: ").Append(selectedSkillPresenter.GetId())
-                .Append("\nCost: ").Append(selectedSkillPresenter.GetCost())
-                .Append("\nIsLearned: ").Append(selectedSkillPresenter.GetLearnState())
-                .Append("\nIsLearnedFromBeginning: ").Append(selectedSkillPresenter.GetLearnFromBeginningState())
+                .Append("Name: ").Append(selectedSkill.Name)
+                .Append("\nId: ").Append(selectedSkill.Id)
+                .Append("\nCost: ").Append(selectedSkill.Cost)
+                .Append("\nIsLearned: ").Append(selectedSkill.IsLearned)
+                .Append("\nIsLearnedFromBeginning: ").Append(selectedSkill.IsBaseSkill)
                 .ToString();
-    }
-
-    private void OnDestroy() {
-        _presenter.SelectedSkillChanged -= HandleSelectedSkillChanged;
-        _presenter.ChangedAmountOfAvailableSkillPoints -= ChangeAmountOfAvailableSkillPoints;
     }
 }

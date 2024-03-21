@@ -1,4 +1,5 @@
 ﻿using System;
+using Model;
 using UnityEngine;
 
 public class Starter : MonoBehaviour {
@@ -7,10 +8,11 @@ public class Starter : MonoBehaviour {
 
     private SkillTreeScreenView _skillTreeScreen;
     
-    private void Start() {
+    private void Awake() {
         var skillTreeData = new SkillTreeData(_skillsContainerSO);
         var skillPointsData = new SkillPointsData();
-        var skillTreePresenter = new SkillTreeScreenPresenter(skillTreeData,skillPointsData);
+        var skillTreeProgressionData = new SkillTreeProgressionData(skillTreeData, skillPointsData);
+        var skillTreePresenter = new SkillTreeScreenPresenter(skillTreeProgressionData, skillTreeData, skillPointsData);
         
         _skillTreeScreen = Instantiate(_skillTreeScreenPrefab);
         _skillTreeScreen.Initialize(skillTreePresenter);

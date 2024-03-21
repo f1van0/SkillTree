@@ -16,5 +16,5 @@ MonoBehaviour:
   <Name>k__BackingField: "\u0411\u0430\u0437\u0430"
   <Position>k__BackingField: {x: -60, y: 0}
   <Cost>k__BackingField: 0
-  <IsLearnedAtTheBeginning>k__BackingField: 1
+  <IsBaseSkill>k__BackingField: 1
   <Requirements>k__BackingField: []

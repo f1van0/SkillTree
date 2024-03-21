@@ -4,9 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class SkillView : MonoBehaviour {
-    public event Action<String> Selected;
-
-    public String Id { get; private set; }
+    public string Id { get; private set; }
 
     [SerializeField] private TMP_Text _label;
     [SerializeField] private Button _button;
@@ -19,24 +17,28 @@ public class SkillView : MonoBehaviour {
 
     public void Initialize(SkillPresenter presenter) {
         _presenter = presenter;
-        _presenter.Changed += SetUpValues;
-        _button.onClick.AddListener(HandleClick);
-        SetUpValues();
+        SetupValues();
     }
 
-    public void SetUpValues() {
-        Id = _presenter.GetId();
-        gameObject.name = "Skill_"+_presenter.GetName();
-        _label.text = _presenter.GetName();
-        _image.color = _presenter.GetLearnState()? _learnedColor : _defaultColor;
+    private void OnEnable() {
+        _presenter.Changed += SetupValues;
+        _button.onClick.AddListener(HandleClick);
+    }
+
+    private void OnDisable() {
+        _presenter.Changed -= SetupValues;
+        _button.onClick.RemoveListener(HandleClick);
+    }
+
+    public void SetupValues() {
+        Id = _presenter.Id;
+        gameObject.name = "Skill_"+_presenter.Name;
+        transform.localPosition = _presenter.Position;
+        _label.text = _presenter.Name;
+        _image.color = _presenter.IsLearned? _learnedColor : _defaultColor;
     }
 
     public void HandleClick() {
-        Selected?.Invoke(Id);
-    }
-
-    private void OnDestroy() {
-        _presenter.Changed -= SetUpValues;
-        _button.onClick.RemoveListener(HandleClick);
+        _presenter.Select();
     }
 }

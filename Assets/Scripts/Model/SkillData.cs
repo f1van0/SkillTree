@@ -5,11 +5,11 @@ using UnityEngine;
 public class SkillData {
     public event Action Changed;
     
-    public String Id { get; private set; }
-    public String Name { get; private set; }
+    public string Id { get; private set; }
+    public string Name { get; private set; }
     public Vector2 Position { get; private set; }
     public int Cost { get; private set; }
-    public bool IsLearnedAtTheBeginning { get; private set; }
+    public bool IsBaseSkill { get; private set; }
     public List<SkillData> Connections { get; private set; }
 
     public bool IsLearned
@@ -20,8 +20,10 @@ public class SkillData {
         }
         set
         {
-            _isLearned = value;
-            Changed?.Invoke();
+            if (_isLearned != value) {
+                _isLearned = value;
+                Changed?.Invoke();
+            }
         }
     }
 
@@ -33,37 +35,37 @@ public class SkillData {
         Position = config.Position;
         Cost = config.Cost;
         Connections = new List<SkillData>();
-        IsLearnedAtTheBeginning = config.IsLearnedAtTheBeginning;
-        IsLearned = config.IsLearnedAtTheBeginning;
+        IsBaseSkill = config.IsBaseSkill;
+        IsLearned = config.IsBaseSkill;
     }
 
     public bool HasConnectionWithSkill(SkillData skill) {
         return Connections.Contains(skill);
     }
 
-    public void AddConnection(SkillData skill) {
+    public bool TryAddConnection(SkillData skill) {
         if (Connections.Contains(skill))
-            throw new Exception("You're trying to add a connection to a skill, but this connection is already exists!");
+            return false;
 
         Connections.Add(skill);
+        return true;
     }
 
-    public void Learn() {
+    public bool TryLearn() {
         if (IsLearned) {
-            throw new Exception("You are trying to learn selected skill that was already learned!");
+            return true;
         }
         
         IsLearned = true;
+        return true;
     }
 
-    public void Forget() {
-        if (!IsLearned)
-            throw new Exception($"You are trying to forget a skill {Name} that has not been learned");
-        
-        if (IsLearnedAtTheBeginning)
-            throw new Exception($"You are trying to forget a skill {Name} that learned from the beginning");
+    public bool TryForget() {
+        if (!IsLearned || IsBaseSkill)
+            return false;
 
         IsLearned = false;
+        return true;
     }
 
     public bool CanBeLearned(int amountOfSkillPoints) {
@@ -79,11 +81,11 @@ public class SkillData {
     }
 
     public bool CanBeForgotten() {
-        if (IsLearnedAtTheBeginning || !IsLearned)
+        if (IsBaseSkill || !IsLearned)
             return false;
         
         foreach (var anotherSkill in Connections) {
-            if (!anotherSkill.IsLearned || anotherSkill.IsLearnedAtTheBeginning)
+            if (!anotherSkill.IsLearned || anotherSkill.IsBaseSkill)
                 continue;
 
             if (!IsSkillConnectedWithBaseSkill(anotherSkill, this))
@@ -102,7 +104,7 @@ public class SkillData {
         
         bool TryToFindBaseSkillInConnections(SkillData skillData) {
             foreach (var connectedSkill in skillData.Connections) {
-                if (connectedSkill.IsLearnedAtTheBeginning)
+                if (connectedSkill.IsBaseSkill)
                     return true;
                 
                 if (visitedSkills.Contains(connectedSkill) || connectedSkill == ignoreSkill)

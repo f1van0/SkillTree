@@ -1,6 +1,7 @@
 using System;
 
-public class SkillPointsData {
+public class SkillPointsData
+{
     public event Action<int> ChangedAmountOfSkillPoints;
 
     public int AmountOfSkillPoints
@@ -11,8 +12,10 @@ public class SkillPointsData {
         }
         private set
         {
-            _amountOfSkillPoints = value;
-            ChangedAmountOfSkillPoints?.Invoke(_amountOfSkillPoints);
+            if (_amountOfSkillPoints != value) {
+                _amountOfSkillPoints = value;
+                ChangedAmountOfSkillPoints?.Invoke(_amountOfSkillPoints);
+            }
         }
     }
 

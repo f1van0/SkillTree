@@ -24,12 +24,12 @@ public class SkillConfigSO_Editor : Editor {
 
 [CreateAssetMenu(menuName = "SkillTree/SkillConfig", fileName = "SkillConfig", order = 0)]
 public class SkillConfigSO : ScriptableObject {
-    [field:SerializeField] public String Id { get; private set; }
+    [field:SerializeField] public string Id { get; private set; }
     
-    [field:SerializeField] public String Name { get; private set; }
+    [field:SerializeField] public string Name { get; private set; }
     [field:SerializeField] public Vector2 Position { get; private set; }
     [field:SerializeField] public int Cost { get; private set; }
-    [field:SerializeField] public bool IsLearnedAtTheBeginning { get; private set; }
+    [field:SerializeField] public bool IsBaseSkill { get; private set; }
     [field:SerializeField] public List<SkillConfigSO> Requirements { get; private set; }
 
     private void OnValidate() {

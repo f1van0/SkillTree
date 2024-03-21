@@ -1,23 +1,28 @@
 using System;
+using Model;
 
 public class SkillOptionsPresenter {
     public event Action SelectedSkillChanged;
     public event Action<int> ChangedAmountOfAvailableSkillPoints;
 
-    private SkillTreeData _skillTreeData;
-    private SkillPointsData _skillPointsData;
+    public SkillPresenter SelectedSkill
+        => _selectedSkillPresenter;
+    
+    public int AmountOfAvailableSkillPoints
+        => _skillTreeProgressionData.AmountOfAvailableSkillPoints;
+
+    private SkillTreeProgressionData _skillTreeProgressionData;
     private SkillPresenter _selectedSkillPresenter;
 
-    public SkillOptionsPresenter(SkillTreeData skillTreeData, SkillPointsData skillPointsData) {
-        _skillTreeData = skillTreeData;
-        _skillPointsData = skillPointsData;
+    public SkillOptionsPresenter(SkillTreeProgressionData skillTreeProgressionData) {
+        _skillTreeProgressionData = skillTreeProgressionData;
         
-        _skillTreeData.SelectedSkillChanged += HandleSelectedSkillChanged;
-        _skillPointsData.ChangedAmountOfSkillPoints += HandleChangedAmountOfAvailableSkillPoints;
+        skillTreeProgressionData.SelectedSkillChanged += HandleSelectedSkillChanged;
+        skillTreeProgressionData.ChangedAmountOfAvailableSkillPoints += HandleChangedAmountOfAvailableSkillPoints;
     }
 
     private void HandleSelectedSkillChanged() {
-        _selectedSkillPresenter = new SkillPresenter(_skillTreeData.GetSelectedSkill());
+        _selectedSkillPresenter = new SkillPresenter(_skillTreeProgressionData.SelectedSkill);
         SelectedSkillChanged?.Invoke();
     }
 
@@ -25,38 +30,27 @@ public class SkillOptionsPresenter {
         ChangedAmountOfAvailableSkillPoints?.Invoke(amount);
     }
 
-    public int GetAmountOfAvailableSkillPoints() {
-        return _skillPointsData.AmountOfSkillPoints;
-    }
-
     public void EarnSkillPoint() {
-        _skillPointsData.AddSkillPoints(1);
+        _skillTreeProgressionData.EarnSkillPoint();
     }
     
     public bool CanLearnSelectedSkill() {
-        return _skillTreeData.CanLearnSelectedSkill(_skillPointsData.AmountOfSkillPoints);
+        return _skillTreeProgressionData.CanLearnSelectedSkill();
     }
 
     public bool CanForgetSelectedSkill() {
-        return _skillTreeData.CanForgetSelectedSkill();
+        return _skillTreeProgressionData.CanForgetSelectedSkill();
     }
 
     public void LearnSelectedSkill() {
-        _skillTreeData.LearnSelectedSkill(out var cost);
-        _skillPointsData.AddSkillPoints(-cost);
+        _skillTreeProgressionData.LearnSelectedSkill();
     }
 
     public void ForgetSelectedSkill() {
-        _skillTreeData.ForgetSelectedSkill(out var cost);
-        _skillPointsData.AddSkillPoints(cost);
+        _skillTreeProgressionData.ForgetSelectedSkill();
     }
     
     public void ForgetAllSkills() {
-        _skillTreeData.ForgetAllSkills(out var cost);
-        _skillPointsData.AddSkillPoints(cost);
-    }
-
-    public SkillPresenter GetPresenterForSelectedSkill() {
-        return _selectedSkillPresenter;
+        _skillTreeProgressionData.ForgetAllSkills();
     }
 }
