@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "SkillTree/SkillsContainer", fileName = "SkillsContainer", order = 0)]
-public class SkillsContainerSO : ScriptableObject {
-    [field: SerializeField] public List<SkillConfigSO> Skills { get; private set; }
+namespace StaticData {
+    [CreateAssetMenu(menuName = "SkillTree/SkillsContainer", fileName = "SkillsContainer", order = 0)]
+    public class SkillsContainerSO : ScriptableObject {
+        [field: SerializeField] public List<SkillConfigSO> Skills { get; private set; }
+    }
 }

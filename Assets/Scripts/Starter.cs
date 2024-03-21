@@ -1,6 +1,9 @@
 ﻿using System;
 using Model;
+using Presenter;
+using StaticData;
 using UnityEngine;
+using View;
 
 public class Starter : MonoBehaviour {
     [SerializeField] private SkillsContainerSO _skillsContainerSO;

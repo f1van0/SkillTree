@@ -1,31 +1,33 @@
 using System;
 
-public class SkillPointsData
-{
-    public event Action<int> ChangedAmountOfSkillPoints;
-
-    public int AmountOfSkillPoints
+namespace Model {
+    public class SkillPointsData
     {
-        get
+        public event Action<int> ChangedAmountOfSkillPoints;
+
+        public int AmountOfSkillPoints
         {
-            return _amountOfSkillPoints; 
-        }
-        private set
-        {
-            if (_amountOfSkillPoints != value) {
-                _amountOfSkillPoints = value;
-                ChangedAmountOfSkillPoints?.Invoke(_amountOfSkillPoints);
+            get
+            {
+                return _amountOfSkillPoints; 
+            }
+            private set
+            {
+                if (_amountOfSkillPoints != value) {
+                    _amountOfSkillPoints = value;
+                    ChangedAmountOfSkillPoints?.Invoke(_amountOfSkillPoints);
+                }
             }
         }
-    }
 
-    private int _amountOfSkillPoints;
+        private int _amountOfSkillPoints;
 
-    public SkillPointsData() {
-        AmountOfSkillPoints = 0;
-    }
+        public SkillPointsData() {
+            AmountOfSkillPoints = 0;
+        }
 
-    public void AddSkillPoints(int amount) {
-        AmountOfSkillPoints += amount;
+        public void AddSkillPoints(int amount) {
+            AmountOfSkillPoints += amount;
+        }
     }
 }
